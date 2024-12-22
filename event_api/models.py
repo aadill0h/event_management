@@ -28,6 +28,7 @@ class Registrations(models.Model):
      email = models.EmailField()
      department = models.CharField(max_length =100)
      year = models.IntegerField()
-
+     attendance = models.BooleanField(default=False)
+     feedback = models.TextField(null=True)
      def __str__(self):
           return f"{self.name} - {self.event.title}"

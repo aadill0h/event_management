@@ -21,16 +21,12 @@ class CreateEventSerializer(serializers.ModelSerializer):
         return event
 
 class UpdateEventSerializer(serializers.Serializer):
-    # Define the fields manually
     venue = serializers.CharField(max_length=100)
     capacity = serializers.IntegerField()
 
     def update(self, instance, validated_data):
-        # Update the fields from validated data
         instance.capacity = validated_data.get('capacity', instance.capacity)
         instance.venue = validated_data.get('venue', instance.venue)
-        
-        # Save the updated instance
         instance.save()
         return instance
 
@@ -44,3 +40,24 @@ class RegistrationSerializer(serializers.ModelSerializer):
     class Meta :
         model = Registrations
         fields = ['studentId', 'name', 'email', 'department', 'year']
+
+
+class ViewEventAttendanceSerialiser(serializers.ModelSerializer):
+    class Meta:
+        model = Registrations
+        fields = ['studentId', 'name', 'attendance']
+
+class EditEventAttendanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Registrations
+        fields = ['studentId','attendance']
+
+class ViewEventFeedbackSerialiszer(serializers.ModelSerializer):
+    class Meta:
+        model = Registrations
+        fields = ['studentId','name','feedback']
+
+class EditEventFeedbackSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Registrations
+        fields = ['studentId','feedback']

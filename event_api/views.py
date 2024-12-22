@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import status
-from .serializers import CreateEventSerializer, UpdateEventSerializer , ListEventSerializer, RegistrationSerializer
+from .serializers import CreateEventSerializer, UpdateEventSerializer , ListEventSerializer, RegistrationSerializer,ViewEventAttendanceSerialiser,EditEventAttendanceSerializer, ViewEventFeedbackSerialiszer,EditEventFeedbackSerializer
 from .models import Events,Registrations
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -60,7 +60,7 @@ class RegistrationView(APIView):
             event = Events.objects.get(id = eventId)
         except Events.DoesNotExist:
             return Response(
-                {"error":"event not found"}, status=status
+                {"error":"event not found"}, status=status.HTTP_404_NOT_FOUND
             )
         serializer = RegistrationSerializer(data=request.data)
         if serializer.is_valid():
@@ -94,3 +94,78 @@ class EventDeleteView(APIView):
                 {"error":"event not found"},
                 status=status.HTTP_404_NOT_FOUND
             )
+
+class ViewEventAttendanceView(APIView):
+    def get(self, request, eventId):
+        try:
+            event = Events.objects.get(id=eventId)
+        except Events.DoesNotExist:
+            return Response({"error":"event not found"},status = status.HTTP_404_NOT_FOUND)
+        attendees = Registrations.objects.filter(event=event)
+        serializer = ViewEventAttendanceSerialiser(attendees,many = True)
+        return Response(serializer.data , status=status.HTTP_200_OK)
+    
+class EditEventAttendanceView(APIView):
+    def get(self, request, eventId):
+        try:
+            event = Events.objects.get(id=eventId)
+        except Events.DoesNotExist:
+            return Response({"error": "Event does not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+        registrations = Registrations.objects.filter(event=event)
+        serializer = ViewEventAttendanceSerialiser(registrations, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, eventId, format=None):
+        try:
+            event = Events.objects.get(id=eventId)
+        except Events.DoesNotExist:
+            return Response({"error": "Event does not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+        registrations = Registrations.objects.filter(event=event)
+
+        serializer = EditEventAttendanceSerializer(data=request.data, many=True, partial=True)
+        if serializer.is_valid():
+            for record in serializer.validated_data:
+                try:
+                    registration = Registrations.objects.get(event=event, studentId=record['studentId'])
+                except Registrations.DoesNotExist:
+                    return Response({"error": f"Registration for studentId {record['studentId']} not found"}, status=status.HTTP_404_NOT_FOUND)
+
+                registration.attendance = record.get("attendance", registration.attendance)
+                registration.save()
+
+            return Response({"message": "Attendance updated successfully"}, status=status.HTTP_200_OK)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ViewEventFeedbackView(APIView):
+    def get(self , request , eventId):
+        try :
+            event = Events.objects.get(id = eventId)
+        except Events.DoesNotExist:
+            return Render(
+                {"error":"event not found"},status = status.HTTP_404_NOT_FOUND
+            )
+        feedback  = Registrations.objects.filter(event = event)
+        serializer = ViewEventFeedbackSerialiszer(feedback, many= True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class CreateFeedbackView(APIView):
+    def put(self, request, registrationId, format=None):
+        try:
+            registration = Registrations.objects.get(id=registrationId)
+        except Registrations.DoesNotExist:
+            return Response({"error": "Registration does not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+        if not registration.attendance:
+            return Response({"error": "Feedback can only be provided if attendance is True"}, status=status.HTTP_403_FORBIDDEN)
+
+        serializer = EditEventFeedbackSerializer(registration, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {"message": "Feedback submitted successfully"}, status=status.HTTP_200_OK
+                )
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
