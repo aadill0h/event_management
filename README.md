@@ -20,8 +20,11 @@ source env/bin/activate  # On Windows: env\Scripts\activate
     python manage.py makemigrations
     python manage.py migrate
 
-### Step 5: Run the Development Server
+### Step 5: Create SuperUser
+    python manage.py createsuperuser
+access the admin panel by going to '/admin/' and login using the credentials you just made.
 
+### Step 6 :Run The Development Server
     python manage.py runserver
 
 ## **Current Features**
