@@ -51,23 +51,23 @@ access the admin panel by going to '/admin/' and login using the credentials you
 ### **Event Management**
 | HTTP Method | Endpoint                              | Description                  |
 |-------------|---------------------------------------|------------------------------|
-| POST        | `/events/create/`                    | Create an event.             |
-| PUT         | `/event/update/<int:eventId>/`       | Update an event.             |
-| GET         | `/events/all/`                       | List all events.             |
-| GET         | `/events/<int:eventId>/`             | View event details.          |
-| DELETE      | `/events/<int:eventId>/delete/`      | Delete an event.             |
-| POST        | `/events/register/<int:eventId>/`    | Register for a specific event.|
+| POST        | `/api/events/create/`                    | Create an event.             |
+| PUT         | `/api/event/update/<int:eventId>/`       | Update an event.             |
+| GET         | `/api/events/all/`                       | List all events.             |
+| GET         | `/api/events/<int:eventId>/`             | View event details.          |
+| DELETE      | `/api/events/<int:eventId>/delete/`      | Delete an event.             |
+| POST        | `/api/events/register/<int:eventId>/`    | Register for a specific event.|
 
 
 ### **Attendance Management**
 | HTTP Method | Endpoint                                     | Description               |
 |-------------|----------------------------------------------|---------------------------|
-| GET         | `/events/attendance/view/<int:eventId>/`    | View attendance.          |
-| PUT         | `/events/attendance/edit/<int:eventId>/`    | Edit attendance.          |
+| GET         | `/api/events/attendance/view/<int:eventId>/`    | View attendance.          |
+| PUT         | `/api/events/attendance/edit/<int:eventId>/`    | Edit attendance.          |
 
 ### **Feedback**
 | HTTP Method | Endpoint                                     | Description               |
 |-------------|----------------------------------------------|---------------------------|
-| POST        | `/events/feedback/<int:registrationId>/`    | Create feedback.          |
-| GET         | `/events/feedback/view/<int:eventId>/`      | View feedback for an event.|
+| POST        | `/api/events/feedback/<int:registrationId>/`    | Create feedback.          |
+| GET         | `/api/events/feedback/view/<int:eventId>/`      | View feedback for an event.|
 
