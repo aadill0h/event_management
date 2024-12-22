@@ -49,13 +49,15 @@ access the admin panel by going to '/admin/' and login using the credentials you
   - View Feedback: Retrieve feedback for a specific event.<br>
 ##  **API ENDPOINTS**
 ### **Event Management**
-| HTTP Method | Endpoint                              | Description              |
-|-------------|---------------------------------------|--------------------------|
-| POST        | `/events/create/`                    | Create an event.         |
-| PUT         | `/event/update/<int:eventId>/`       | Update an event.         |
-| GET         | `/events/all/`                       | List all events.         |
-| GET         | `/events/<int:eventId>/`             | View event details.      |
-| DELETE      | `/events/<int:eventId>/delete/`      | Delete an event.         |
+| HTTP Method | Endpoint                              | Description                  |
+|-------------|---------------------------------------|------------------------------|
+| POST        | `/events/create/`                    | Create an event.             |
+| PUT         | `/event/update/<int:eventId>/`       | Update an event.             |
+| GET         | `/events/all/`                       | List all events.             |
+| GET         | `/events/<int:eventId>/`             | View event details.          |
+| DELETE      | `/events/<int:eventId>/delete/`      | Delete an event.             |
+| POST        | `/events/register/<int:eventId>/`    | Register for a specific event.|
+
 
 ### **Attendance Management**
 | HTTP Method | Endpoint                                     | Description               |
