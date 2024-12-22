@@ -35,6 +35,7 @@ access the admin panel by going to '/admin/' and login using the credentials you
 - List Events: Get a list of all events.
 - Event Details: View details of a specific event.
 - Delete an Event: Remove an event.
+- Register for an event.
 
 ### Attendance Management
 
